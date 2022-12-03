@@ -5,9 +5,9 @@ use std::f64::consts::PI;
 fn main() {
 	let args = std::env::args().collect::<Vec<String>>();
 	let starting_vals_names = ["A", "B", "T"];
-	let mut starting_vals = [0.0, 0.0, 0.0];
-	let points = get_starting_values::get_starting_values(args.clone(), &starting_vals_names, &mut starting_vals);
+	let (starting_values, points) = get_starting_values::get_starting_values(args, &starting_vals_names);
 	println!("{:?}", points);
+	println!("{:?}", starting_values);
 }
 
 fn cost(a: f64, b: f64, t: f64, values: &[[f64; 2]]) -> f64 {
