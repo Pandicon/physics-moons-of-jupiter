@@ -8,11 +8,9 @@ use structs::Point;
 fn main() {
 	let args = std::env::args().collect::<Vec<String>>();
 	let (points, starting_values) = get_starting_values::get_starting_values(args);
-	println!("{:?}", points);
-	println!("{:?}", starting_values);
 	let [mut amplitude, mut offset, mut frequency] = starting_values;
 	let mut min_cost = cost(amplitude.value, offset.value, frequency.value, &points);
-	println!("{min_cost}");
+	println!("Starting cost: {min_cost}");
 	for i in -1..(frequency.steps as i32) {
 		if i >= 0 {
 			frequency.value += (frequency.max - frequency.min) / frequency.steps;
