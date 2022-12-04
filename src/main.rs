@@ -41,7 +41,7 @@ fn main() {
 fn cost(a: f64, b: f64, f: f64, values: &[Point]) -> f64 {
 	let mut sum = 0.0;
 	for point in values {
-		sum += ((a * (2.0 * PI * point.x * f + b).sin() - point.y) / point.error.max(10e-6)).powi(2);
+		sum += ((a * (2.0 * PI * point.x * f + b).sin() - point.y) / point.error.max(10e-6)).abs().powi(2);
 	}
 	sum
 }
