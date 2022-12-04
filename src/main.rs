@@ -32,9 +32,9 @@ fn main() {
 					)
 				}
 			}
-			amplitude.value = 0.0;
+			amplitude.value = amplitude.min;
 		}
-		offset.value = 0.0;
+		offset.value = offset.min;
 	}
 }
 
