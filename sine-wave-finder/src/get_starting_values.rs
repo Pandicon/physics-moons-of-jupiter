@@ -1,6 +1,9 @@
 use std::io::Write;
 
-use crate::structs::{Parameter, Point};
+use crate::{
+	structs::{Parameter, Point},
+	OUTPUT_DIVIDER,
+};
 
 pub fn get_starting_values(mut args: Vec<String>) -> (Vec<Point>, [Parameter; 3], bool) {
 	let mut starting_vals = [
@@ -125,6 +128,11 @@ pub fn get_starting_values(mut args: Vec<String>) -> (Vec<Point>, [Parameter; 3]
 			println!("[{}, {}]", point.x, point.y);
 		}
 		println!("--------------------");
+	} else {
+		for point in &points {
+			println!("{} {}", point.x, point.y);
+		}
+		println!("{OUTPUT_DIVIDER}");
 	}
 	(points, starting_vals, raw_output)
 }

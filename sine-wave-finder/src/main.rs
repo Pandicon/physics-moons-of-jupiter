@@ -5,6 +5,8 @@ use std::f64::consts::PI;
 
 use structs::Point;
 
+pub const OUTPUT_DIVIDER: &str = "---";
+
 fn main() {
 	let args = std::env::args().collect::<Vec<String>>();
 	let (points, starting_values, raw_output) = get_starting_values::get_starting_values(args);
@@ -43,6 +45,9 @@ fn main() {
 			amplitude.value = amplitude.min;
 		}
 		offset.value = offset.min;
+	}
+	if raw_output {
+		println!("{OUTPUT_DIVIDER}");
 	}
 }
 

@@ -1,5 +1,5 @@
 [package]
-name = "physics-moons-of-jupiter"
+name = "sine-wave-finder"
 version = "0.1.0"
 edition = "2021"
 
