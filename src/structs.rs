@@ -8,10 +8,6 @@ pub struct Parameter {
 }
 
 impl Parameter {
-	pub fn new(name: String, value: f64, min: f64, max: f64, steps: f64) -> Self {
-		Self { name, value, min, max, steps }
-	}
-
 	pub fn default_with_name(name: String) -> Self {
 		Self {
 			name,
