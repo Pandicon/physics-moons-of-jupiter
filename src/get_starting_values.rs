@@ -2,12 +2,13 @@ use std::io::Write;
 
 use crate::structs::{Parameter, Point};
 
-pub fn get_starting_values(mut args: Vec<String>) -> (Vec<Point>, [Parameter; 3]) {
+pub fn get_starting_values(mut args: Vec<String>) -> (Vec<Point>, [Parameter; 3], bool) {
 	let mut starting_vals = [
 		Parameter::default_with_name("A".to_string()),
 		Parameter::default_with_name("B".to_string()),
 		Parameter::default_with_name("F".to_string()),
 	];
+	let raw_output = args.len() > 1 && args[1].to_lowercase() == "--raw-output";
 	let mut i = 0;
 	let mut ask_for_starting_vals = true;
 	'outer: while !args.is_empty() {
@@ -32,20 +33,24 @@ pub fn get_starting_values(mut args: Vec<String>) -> (Vec<Point>, [Parameter; 3]
 		starting_vals[i].min = vals[1];
 		starting_vals[i].max = vals[2];
 		starting_vals[i].steps = vals[3];
-		println!(
-			"Using {} = {}; {} <= {} <= {}; steps = {} from arguments",
-			starting_vals[i].name, starting_vals[i].value, starting_vals[i].min, starting_vals[i].name, starting_vals[i].max, starting_vals[i].steps
-		);
+		if !raw_output {
+			println!(
+				"Using {} = {}; {} <= {} <= {}; steps = {} from arguments",
+				starting_vals[i].name, starting_vals[i].value, starting_vals[i].min, starting_vals[i].name, starting_vals[i].max, starting_vals[i].steps
+			);
+		}
 		i += 1;
 		if i == starting_vals.len() {
 			break;
 		}
 	}
 	while i < starting_vals.len() && ask_for_starting_vals {
-		print!("What should the starting value of {} be? ", starting_vals[i].name);
-		if std::io::stdout().flush().is_err() {
-			println!();
-		};
+		if !raw_output {
+			print!("What should the starting value of {} be? ", starting_vals[i].name);
+			if std::io::stdout().flush().is_err() {
+				println!();
+			};
+		}
 		let line = read_input_line().trim().split(' ').filter_map(|x| x.parse().ok()).collect::<Vec<f64>>();
 		if line.len() < 4 {
 			continue;
@@ -86,14 +91,14 @@ pub fn get_starting_values(mut args: Vec<String>) -> (Vec<Point>, [Parameter; 3]
 			}
 		}
 	}
-	if ask_for_points {
+	if ask_for_points && !raw_output {
 		println!("Input [x, y, error] pairs to include to the points one by one, separated with new lines ('s' to stop): ");
+		if std::io::stdout().flush().is_err() {
+			println!();
+		};
 	}
 	if ask_for_points {
 		loop {
-			if std::io::stdout().flush().is_err() {
-				println!();
-			};
 			let line = read_input_line();
 			if line.to_lowercase() == *"s" {
 				break;
@@ -105,21 +110,23 @@ pub fn get_starting_values(mut args: Vec<String>) -> (Vec<Point>, [Parameter; 3]
 			points.push(Point::from_array([vals[0], vals[1], vals[2]]));
 		}
 	}
-	println!();
-	println!("--------------------");
-	for parameter in &starting_vals {
-		println!(
-			"Using {} = {}; {} <= {} <= {}; steps = {}",
-			parameter.name, parameter.value, parameter.min, parameter.name, parameter.max, parameter.steps
-		);
+	if !raw_output {
+		println!();
+		println!("--------------------");
+		for parameter in &starting_vals {
+			println!(
+				"Using {} = {}; {} <= {} <= {}; steps = {}",
+				parameter.name, parameter.value, parameter.min, parameter.name, parameter.max, parameter.steps
+			);
+		}
+		println!("----------");
+		println!("Using the following points:");
+		for point in &points {
+			println!("[{}, {}]", point.x, point.y);
+		}
+		println!("--------------------");
 	}
-	println!("----------");
-	println!("Using the following points:");
-	for point in &points {
-		println!("[{}, {}]", point.x, point.y);
-	}
-	println!("--------------------");
-	(points, starting_vals)
+	(points, starting_vals, raw_output)
 }
 
 fn read_input_line() -> String {
