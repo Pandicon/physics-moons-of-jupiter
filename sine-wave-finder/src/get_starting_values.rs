@@ -125,12 +125,12 @@ pub fn get_starting_values(mut args: Vec<String>) -> (Vec<Point>, [Parameter; 3]
 		println!("----------");
 		println!("Using the following points:");
 		for point in &points {
-			println!("[{}, {}]", point.x, point.y);
+			println!("[{}, {}]; error = {}", point.x, point.y, point.error);
 		}
 		println!("--------------------");
 	} else {
 		for point in &points {
-			println!("{} {}", point.x, point.y);
+			println!("{} {} {}", point.x, point.y, point.error);
 		}
 		println!("{OUTPUT_DIVIDER}");
 	}
