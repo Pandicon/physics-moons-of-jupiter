@@ -33,10 +33,9 @@ impl Application {
 				let lines = points
 					.iter()
 					.map(|point| {
-						let n = (point.error * 10.0 + 1.0) as u64;
-						let line_points: egui::plot::PlotPoints = (0..=n)
+						let line_points: egui::plot::PlotPoints = (0..=1)
 							.map(|i| {
-								let y = egui::remap(i as f64, 0.0..=n as f64, (point.y - point.error)..=(point.y + point.error));
+								let y = egui::remap(i as f64, 0.0..=1.0 as f64, (point.y - point.error)..=(point.y + point.error));
 								[point.x, y]
 							})
 							.collect();
