@@ -39,3 +39,11 @@ impl Wave {
 		})
 	}
 }
+
+#[derive(Debug)]
+pub struct InputSection {
+	pub points_min_x: f64,
+	pub points_max_x: f64,
+	pub points: Vec<Point>,
+	pub waves: Vec<Wave>,
+}

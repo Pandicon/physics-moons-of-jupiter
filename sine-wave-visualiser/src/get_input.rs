@@ -1,6 +1,6 @@
-use crate::structs::{Point, Wave};
+use crate::structs::{InputSection, Point, Wave};
 
-pub fn get_input() -> Vec<(Vec<Point>, Vec<Wave>)> {
+pub fn get_input() -> Vec<InputSection> {
 	let mut data = vec![];
 	'outer: loop {
 		let mut points = vec![];
@@ -14,6 +14,9 @@ pub fn get_input() -> Vec<(Vec<Point>, Vec<Wave>)> {
 			}
 			let split = line.split(' ').filter_map(|x| x.parse::<f64>().ok()).collect::<Vec<f64>>();
 			if let Some(point) = Point::from_vec(split) {
+				if point.x.is_nan() || point.x.is_infinite() || point.y.is_nan() || point.y.is_infinite() {
+					continue;
+				}
 				points.push(point)
 			}
 		}
@@ -29,7 +32,33 @@ pub fn get_input() -> Vec<(Vec<Point>, Vec<Wave>)> {
 				waves.push(wave)
 			}
 		}
-		data.push((points, waves));
+		let points_x = points.iter().map(|point| point.x);
+		let mut points_min_x = None;
+		let mut points_max_x = None;
+		println!("{:?}", points_x);
+		for x in points_x {
+			if let Some(min_x) = points_min_x {
+				if x < min_x {
+					points_min_x = Some(x)
+				}
+			} else {
+				points_min_x = Some(x)
+			}
+			if let Some(max_x) = points_max_x {
+				if x > max_x {
+					points_max_x = Some(x)
+				}
+			} else {
+				points_max_x = Some(x)
+			}
+		}
+		println!("{:?} {:?}", points_min_x, points_max_x);
+		data.push(InputSection {
+			points_min_x: points_min_x.unwrap_or(0.0) - 10.0,
+			points_max_x: points_max_x.unwrap_or(0.0) + 10.0,
+			points,
+			waves,
+		});
 	}
 	data
 }
