@@ -7,7 +7,13 @@ mod structs;
 pub const REPOSITORY: &str = env!("CARGO_PKG_REPOSITORY");
 pub const VERSION: &str = env!("CARGO_PKG_VERSION");
 
-pub const COLOURS: [egui::Color32; 5] = [egui::Color32::RED, egui::Color32::GREEN, egui::Color32::BLUE, egui::Color32::YELLOW, egui::Color32::WHITE];
+pub const COLOURS: [egui::Color32; 5] = [
+	egui::Color32::RED,
+	egui::Color32::GREEN,
+	egui::Color32::from_rgb(255, 153, 0),
+	egui::Color32::YELLOW,
+	egui::Color32::WHITE,
+];
 
 fn main() {
 	dotenv::dotenv().ok();
